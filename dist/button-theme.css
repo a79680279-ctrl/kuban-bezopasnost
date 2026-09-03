@@ -1,0 +1,4 @@
+/* Спокойная сине-фиолетовая палитра без красных элементов интерфейса. */
+:root{--red:#2b2479}
+.primary,.red-btn,.floating-call{background:#2b2479!important;color:#fff!important;box-shadow:0 12px 28px rgba(43,36,121,.28)!important}.primary:hover,.red-btn:hover,.floating-call:hover{background:#1e195b!important}.price-btn{border-color:#2b2479!important;color:#2b2479!important}.price-btn:hover{background:#2b2479!important;color:#fff!important}.nav-cta{border-color:rgba(255,255,255,.55)}
+.service-copy>a,footer>a:last-child{color:#9eb3ff!important}.step-icon.red{color:#2b2479!important;border-color:#aaa5d5!important}

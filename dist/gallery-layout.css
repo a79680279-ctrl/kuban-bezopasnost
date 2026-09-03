@@ -1,0 +1,127 @@
+.card-gallery {
+  display: flex !important;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 4px 4px 24px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #5145b8 rgba(255, 255, 255, 0.08);
+}
+
+.card-gallery img {
+  display: block;
+  flex: 0 0 calc((100% - 18px) / 2);
+  width: calc((100% - 18px) / 2);
+  min-width: 0;
+  height: auto;
+  border-radius: 24px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  box-shadow: 0 18px 42px rgba(2, 8, 28, 0.2);
+}
+
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 38px;
+}
+
+.gallery-hint {
+  color: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  opacity: 0.72;
+}
+
+.gallery-navigation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gallery-counter {
+  min-width: 74px;
+  text-align: center;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  opacity: 0.72;
+}
+
+.gallery-arrow {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(122, 112, 238, 0.55);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #20205d, #342986);
+  color: #fff;
+  font: 800 22px/1 Arial, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(19, 15, 72, 0.25);
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.gallery-arrow:hover:not(:disabled) {
+  transform: translateY(-2px);
+  border-color: #a49cff;
+}
+
+.gallery-arrow:focus-visible {
+  outline: 3px solid rgba(140, 130, 255, 0.42);
+  outline-offset: 3px;
+}
+
+.gallery-arrow:disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.video-section .gallery-hint,
+.video-section .gallery-counter {
+  color: #27305a;
+}
+
+.physical-section {
+  background: #0b1535;
+}
+
+.physical-section .kicker {
+  color: #b3b8ff;
+}
+
+@media (max-width: 700px) {
+  .gallery-controls {
+    margin-top: 30px;
+  }
+
+  .gallery-hint {
+    font-size: 12px;
+  }
+
+  .card-gallery {
+    gap: 14px;
+    margin-right: -20px;
+    padding-right: 20px;
+  }
+
+  .card-gallery img {
+    flex-basis: 86vw;
+    width: 86vw;
+    min-width: 86vw;
+    border-radius: 20px;
+  }
+
+  .gallery-arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+}
