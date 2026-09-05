@@ -33,7 +33,19 @@ phone.addEventListener('input', (event) => {
 
 document.querySelector('#consultForm').addEventListener('submit', (event) => {
   event.preventDefault();
-  event.currentTarget.querySelector('.success').classList.add('show');
+  const formData = new FormData(event.currentTarget);
+  const name = String(formData.get('name') || '').trim();
+  const phoneNumber = String(formData.get('phone') || '').trim();
+  const service = String(formData.get('object') || '').trim();
+  const message = [
+    'Здравствуйте! Хочу получить консультацию по услугам охраны.',
+    '',
+    `Имя: ${name}`,
+    `Телефон: ${phoneNumber}`,
+    `Услуга: ${service}`,
+  ].join('\n');
+
+  window.open(`https://wa.me/79531117313?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
 });
 
 document.querySelectorAll('.card-gallery').forEach((gallery, index) => {
