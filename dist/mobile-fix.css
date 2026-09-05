@@ -1,0 +1,16 @@
+@media (max-width: 600px) {
+  .service-photo {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    background: #111d54;
+  }
+
+  .service-photo img {
+    object-fit: contain;
+  }
+
+  .service-photo::after,
+  .photo-label {
+    display: none;
+  }
+}
