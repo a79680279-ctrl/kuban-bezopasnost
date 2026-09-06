@@ -109,3 +109,46 @@ document.querySelectorAll('.card-gallery').forEach((gallery, index) => {
   images.forEach((image) => image.addEventListener('load', updateControls, { once: true }));
   updateControls();
 });
+
+const faqTabs = [...document.querySelectorAll('.faq-tab')];
+const faqPanels = [...document.querySelectorAll('.faq-panel')];
+
+const activateFaqTab = (activeTab) => {
+  const target = activeTab.dataset.faqTarget;
+
+  faqTabs.forEach((tab) => {
+    const isActive = tab === activeTab;
+    tab.setAttribute('aria-selected', String(isActive));
+    tab.tabIndex = isActive ? 0 : -1;
+  });
+
+  faqPanels.forEach((panel) => {
+    panel.hidden = panel.dataset.faqPanel !== target;
+  });
+};
+
+faqTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => activateFaqTab(tab));
+  tab.addEventListener('keydown', (event) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+
+    let nextIndex = index;
+    if (event.key === 'ArrowLeft') nextIndex = (index - 1 + faqTabs.length) % faqTabs.length;
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % faqTabs.length;
+    if (event.key === 'Home') nextIndex = 0;
+    if (event.key === 'End') nextIndex = faqTabs.length - 1;
+
+    faqTabs[nextIndex].focus();
+    activateFaqTab(faqTabs[nextIndex]);
+  });
+});
+
+document.querySelectorAll('.faq-panel .faq-item').forEach((item) => {
+  item.addEventListener('toggle', () => {
+    if (!item.open) return;
+    item.closest('.faq-panel').querySelectorAll('.faq-item[open]').forEach((openItem) => {
+      if (openItem !== item) openItem.open = false;
+    });
+  });
+});
