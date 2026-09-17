@@ -2,6 +2,7 @@ const objectButtons = document.querySelectorAll('.object');
 const selectedObject = document.querySelector('#selectedObject');
 const solutionIcon = document.querySelector('#solutionIcon');
 const formObject = document.querySelector('#consultForm select');
+let selectedSolutionObject = '';
 
 objectButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -9,12 +10,13 @@ objectButtons.forEach((button) => {
     button.classList.add('active');
     selectedObject.textContent = button.dataset.object;
     solutionIcon.textContent = button.dataset.icon;
-    formObject.value = button.dataset.object;
+    selectedSolutionObject = button.dataset.object;
   });
 });
 
 document.querySelector('.choose-btn').addEventListener('click', () => {
-  formObject.value = selectedObject.textContent.charAt(0).toUpperCase() + selectedObject.textContent.slice(1);
+  selectedSolutionObject = selectedObject.textContent.charAt(0).toUpperCase() + selectedObject.textContent.slice(1);
+  formObject.value = 'Пультовая охрана';
   document.querySelector('#consult').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -43,7 +45,8 @@ document.querySelector('#consultForm').addEventListener('submit', (event) => {
     `Имя: ${name}`,
     `Телефон: ${phoneNumber}`,
     `Услуга: ${service}`,
-  ].join('\n');
+    selectedSolutionObject ? `Объект: ${selectedSolutionObject}` : '',
+  ].filter(Boolean).join('\n');
 
   window.open(`https://wa.me/79531117313?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
 });
