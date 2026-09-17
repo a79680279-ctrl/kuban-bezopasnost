@@ -155,3 +155,26 @@ document.querySelectorAll('.faq-panel .faq-item').forEach((item) => {
     });
   });
 });
+
+const messengerFloat = document.querySelector('.messenger-float');
+const messengerFloatToggle = document.querySelector('.messenger-float-toggle');
+const messengerFloatPanel = document.querySelector('#messengerFloatPanel');
+
+const setMessengerFloatOpen = (isOpen) => {
+  messengerFloatToggle.setAttribute('aria-expanded', String(isOpen));
+  messengerFloatPanel.hidden = !isOpen;
+};
+
+messengerFloatToggle.addEventListener('click', () => {
+  setMessengerFloatOpen(messengerFloatToggle.getAttribute('aria-expanded') !== 'true');
+});
+
+document.addEventListener('click', (event) => {
+  if (!messengerFloat.contains(event.target)) setMessengerFloatOpen(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  setMessengerFloatOpen(false);
+  messengerFloatToggle.focus();
+});

@@ -130,6 +130,135 @@
   display: none;
 }
 
+.messenger-float {
+  position: fixed;
+  z-index: 60;
+  right: 28px;
+  bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.messenger-float-panel[hidden] {
+  display: none;
+}
+
+.messenger-float-panel {
+  width: 290px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 20px;
+  color: #fff;
+  background: rgba(9, 16, 48, .96);
+  box-shadow: 0 22px 55px rgba(4, 9, 35, .34);
+  backdrop-filter: blur(18px);
+  animation: messenger-panel-in .18s ease-out;
+}
+
+.messenger-float-link,
+.messenger-float-pending {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+}
+
+.messenger-float-link {
+  color: #fff;
+  background: #237b39;
+}
+
+.messenger-float-link:hover {
+  background: #1d6c31;
+}
+
+.messenger-float-link i,
+.messenger-float-pending > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, .16);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.messenger-float-link > span,
+.messenger-float-pending p {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+}
+
+.messenger-float-link small,
+.messenger-float-pending small {
+  color: rgba(255, 255, 255, .72);
+  font-size: 12px;
+}
+
+.messenger-float-pending {
+  margin-top: 8px;
+  color: #c7cfee;
+  background: rgba(255, 255, 255, .06);
+}
+
+.messenger-float-pending > span {
+  width: 30px;
+  height: 30px;
+  background: #343f73;
+  font-size: 12px;
+}
+
+.messenger-float-toggle {
+  display: inline-flex;
+  min-height: 58px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 0 10px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(145deg, #5145b8, #33268e);
+  box-shadow: 0 16px 38px rgba(25, 18, 100, .34);
+  cursor: pointer;
+}
+
+.messenger-float-toggle > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  font-size: 19px;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.messenger-float-toggle:hover,
+.messenger-float-toggle[aria-expanded="true"] {
+  background: linear-gradient(145deg, #6558d2, #3b2fa0);
+}
+
+@keyframes messenger-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (max-width: 900px) {
   .trust-evidence {
     grid-template-columns: 1fr;
@@ -137,6 +266,12 @@
 
   .trust-photo img {
     min-height: 360px;
+  }
+}
+
+@media (max-width: 1300px) and (min-width: 601px) {
+  .status {
+    display: none;
   }
 }
 
@@ -219,6 +354,36 @@
 
   .mobile-contact-bar a:last-child {
     background: linear-gradient(145deg, #5145b8, #33268e);
+  }
+
+  .messenger-float {
+    right: 12px;
+    bottom: 86px;
+  }
+
+  .messenger-float-panel {
+    width: min(320px, calc(100vw - 24px));
+  }
+
+  .messenger-float-toggle {
+    width: 54px;
+    min-height: 54px;
+    padding: 7px;
+  }
+
+  .messenger-float-toggle > span {
+    width: 40px;
+    height: 40px;
+  }
+
+  .messenger-float-toggle > b {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 
