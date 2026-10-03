@@ -1,22 +1,38 @@
 const objectButtons = document.querySelectorAll('.object');
 const selectedObject = document.querySelector('#selectedObject');
 const solutionIcon = document.querySelector('#solutionIcon');
-const formObject = document.querySelector('#consultForm select');
-let selectedSolutionObject = '';
+const formService = document.querySelector('#consultForm select[name="service"]');
+const formFacility = document.querySelector('#consultForm select[name="facility"]');
+const chooseButton = document.querySelector('.choose-btn');
+const objectLabels = {
+  'Квартира': 'квартиры',
+  'Дом': 'дома',
+  'Магазин': 'магазина',
+  'Офис': 'офиса',
+  'Склад': 'склада'
+};
+let selectedSolutionObject = 'Квартира';
+
+const updateSelectedObject = (button) => {
+  objectButtons.forEach((item) => {
+    const isActive = item === button;
+    item.classList.toggle('active', isActive);
+    item.setAttribute('aria-pressed', String(isActive));
+  });
+
+  selectedSolutionObject = button.dataset.object;
+  selectedObject.textContent = selectedSolutionObject;
+  solutionIcon.textContent = button.dataset.icon;
+  chooseButton.textContent = `Получить расчёт для ${objectLabels[selectedSolutionObject]}`;
+};
 
 objectButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    objectButtons.forEach((item) => item.classList.remove('active'));
-    button.classList.add('active');
-    selectedObject.textContent = button.dataset.object;
-    solutionIcon.textContent = button.dataset.icon;
-    selectedSolutionObject = button.dataset.object;
-  });
+  button.addEventListener('click', () => updateSelectedObject(button));
 });
 
-document.querySelector('.choose-btn').addEventListener('click', () => {
-  selectedSolutionObject = selectedObject.textContent.charAt(0).toUpperCase() + selectedObject.textContent.slice(1);
-  formObject.value = 'Пультовая охрана';
+chooseButton.addEventListener('click', () => {
+  formService.value = 'Пультовая охрана';
+  formFacility.value = selectedSolutionObject;
   document.querySelector('#consult').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -38,79 +54,38 @@ document.querySelector('#consultForm').addEventListener('submit', (event) => {
   const formData = new FormData(event.currentTarget);
   const name = String(formData.get('name') || '').trim();
   const phoneNumber = String(formData.get('phone') || '').trim();
-  const service = String(formData.get('object') || '').trim();
+  const service = String(formData.get('service') || '').trim();
+  const facility = String(formData.get('facility') || '').trim();
   const message = [
-    'Здравствуйте! Хочу получить консультацию по услугам охраны.',
+    'Здравствуйте! Нужен расчёт охраны.',
     '',
     `Имя: ${name}`,
     `Телефон: ${phoneNumber}`,
     `Услуга: ${service}`,
-    selectedSolutionObject ? `Объект: ${selectedSolutionObject}` : '',
+    `Объект: ${facility}`,
   ].filter(Boolean).join('\n');
 
   window.open(`https://wa.me/79531117313?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
 });
 
-document.querySelectorAll('.card-gallery').forEach((gallery, index) => {
-  const images = [...gallery.querySelectorAll('img')];
-  const sectionName = gallery.closest('section')?.querySelector('.kicker')?.textContent?.trim() || 'Фотографии';
-  const galleryId = `service-gallery-${index + 1}`;
+const menuToggle = document.querySelector('.nav-menu-toggle');
+const mainNavigation = document.querySelector('#mainNavigation');
 
-  gallery.id = galleryId;
-  gallery.tabIndex = 0;
-  gallery.setAttribute('role', 'region');
-  gallery.setAttribute('aria-label', `Карточки: ${sectionName}`);
+const setMenuOpen = (isOpen) => {
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+  mainNavigation.classList.toggle('is-open', isOpen);
+};
 
-  const controls = document.createElement('div');
-  controls.className = 'gallery-controls';
-  controls.innerHTML = `
-    <span class="gallery-hint">Листайте карточки</span>
-    <div class="gallery-navigation">
-      <button class="gallery-arrow gallery-prev" type="button" aria-label="Предыдущие карточки" aria-controls="${galleryId}">←</button>
-      <span class="gallery-counter" aria-live="polite">1–2 / ${images.length}</span>
-      <button class="gallery-arrow gallery-next" type="button" aria-label="Следующие карточки" aria-controls="${galleryId}">→</button>
-    </div>`;
-  gallery.before(controls);
+menuToggle.addEventListener('click', () => {
+  setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true');
+});
 
-  const previousButton = controls.querySelector('.gallery-prev');
-  const nextButton = controls.querySelector('.gallery-next');
-  const counter = controls.querySelector('.gallery-counter');
-  let updateFrame;
+mainNavigation.querySelectorAll('a').forEach((link) => {
+  link.addEventListener('click', () => setMenuOpen(false));
+});
 
-  const visibleCount = () => window.matchMedia('(max-width: 700px)').matches ? 1 : 2;
-  const cardStep = () => {
-    const cardWidth = images[0]?.getBoundingClientRect().width || gallery.clientWidth;
-    const gap = Number.parseFloat(getComputedStyle(gallery).gap) || 0;
-    return cardWidth + gap;
-  };
-
-  const updateControls = () => {
-    const step = cardStep();
-    const firstVisible = Math.min(images.length - 1, Math.max(0, Math.round(gallery.scrollLeft / step)));
-    const lastVisible = Math.min(images.length, firstVisible + visibleCount());
-    const maxScroll = Math.max(0, gallery.scrollWidth - gallery.clientWidth);
-
-    counter.textContent = `${firstVisible + 1}–${lastVisible} / ${images.length}`;
-    previousButton.disabled = gallery.scrollLeft <= 2;
-    nextButton.disabled = gallery.scrollLeft >= maxScroll - 2;
-  };
-
-  const moveGallery = (direction) => {
-    gallery.scrollBy({
-      left: direction * cardStep() * visibleCount(),
-      behavior: 'smooth'
-    });
-  };
-
-  previousButton.addEventListener('click', () => moveGallery(-1));
-  nextButton.addEventListener('click', () => moveGallery(1));
-  gallery.addEventListener('scroll', () => {
-    cancelAnimationFrame(updateFrame);
-    updateFrame = requestAnimationFrame(updateControls);
-  }, { passive: true });
-  window.addEventListener('resize', updateControls);
-  images.forEach((image) => image.addEventListener('load', updateControls, { once: true }));
-  updateControls();
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.nav')) setMenuOpen(false);
 });
 
 const faqTabs = [...document.querySelectorAll('.faq-tab')];
@@ -175,6 +150,7 @@ document.addEventListener('click', (event) => {
 
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape') return;
+  setMenuOpen(false);
   setMessengerFloatOpen(false);
-  messengerFloatToggle.focus();
+  if (document.activeElement && messengerFloat.contains(document.activeElement)) messengerFloatToggle.focus();
 });
