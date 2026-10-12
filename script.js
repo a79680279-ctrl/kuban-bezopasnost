@@ -51,21 +51,7 @@ phone.addEventListener('input', (event) => {
 
 document.querySelector('#consultForm').addEventListener('submit', (event) => {
   event.preventDefault();
-  const formData = new FormData(event.currentTarget);
-  const name = String(formData.get('name') || '').trim();
-  const phoneNumber = String(formData.get('phone') || '').trim();
-  const service = String(formData.get('service') || '').trim();
-  const facility = String(formData.get('facility') || '').trim();
-  const message = [
-    'Здравствуйте! Нужен расчёт охраны.',
-    '',
-    `Имя: ${name}`,
-    `Телефон: ${phoneNumber}`,
-    `Услуга: ${service}`,
-    `Объект: ${facility}`,
-  ].filter(Boolean).join('\n');
-
-  window.open(`https://wa.me/79531117313?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+  window.location.href = 'tel:+79181642500';
 });
 
 const menuToggle = document.querySelector('.nav-menu-toggle');
